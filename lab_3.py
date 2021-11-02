@@ -1,17 +1,22 @@
-s = 'azzaa'
-number = 0
-nugno = set()
-nenugno = set()
-bukva = s[0]
-for i in s:
-    print(i, bukva, number, nugno, nenugno)
-    if i == bukva:
-        number += 1
-    else:
-        if number % 2 == 0:
-            nugno.add(bukva)
+def main():
+    str = input()
+    amount = 0
+    broken_letters = set()
+    pseudo_broken_letters = set()
+    letter = str[0]
+    for i in str:
+        print(i, letter, amount, broken_letters, pseudo_broken_letters)
+        if i == letter:
+            amount += 1
         else:
-            nenugno.add(bukva)
-        bukva = i
-        number = 1
-print(nugno - nenugno)
+            if amount % 2 == 0:
+                broken_letters.add(letter)
+            else:
+                pseudo_broken_letters.add(letter)
+            letter = i
+            amount = 1
+    print(broken_letters - pseudo_broken_letters)
+
+
+if __name__ == '__main__':
+    main()
