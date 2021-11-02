@@ -3,7 +3,6 @@
 вариант - 17
 
 Описание задания
-
 Дан набор букв латинского алфавита, причём известно, что некоторые
 буквы помечены как «сломанные». Из букв этого набора создаётся строка
 𝑆𝑇𝑅𝐼𝐼𝑁𝐺, причём когда необходимо использовать «сломанный» символ, в строке
@@ -16,26 +15,50 @@
 
 Примечание 2: если буква латинского алфавита в строке не используется,
 то она считается «нормальной» за неимением доказательств.
+
+Входные данные
+На вход программе подаётся одна строка 𝑆𝑇𝑅𝐼𝐼𝑁𝐺, состоящая из
+заглавных букв латинского алфавита.
+
+Выходные данные
+Необходимо вывести последовательность латинских букв 𝐵𝑅𝑂𝐾𝐸𝑁,
+которые достоверно можно назвать «сломанными», а если такие буквы не
+удалось обнаружить, вывести сообщение «𝐵𝑟𝑜𝑘𝑒𝑛 𝑐ℎ𝑎𝑟𝑎𝑐𝑡𝑒𝑟𝑠 𝑛𝑜𝑡 𝑓𝑜𝑢𝑛𝑑».
+
+Пример 1: получив на вход строку «𝐴𝐵𝐵𝐴𝐶𝐴𝐴𝐵𝐵𝐶𝐷𝐷», программа
+должна вывести строку «𝐵𝐷».
+
+Пример 2: получив на вход строку «𝐹𝐹𝐹𝐹𝐹», программа должна вывести
+сообщение «𝐵𝑟𝑜𝑘𝑒𝑛 𝑐ℎ𝑎𝑟𝑎𝑐𝑡𝑒𝑟𝑠 𝑛𝑜𝑡 𝑓𝑜𝑢𝑛𝑑».
 """
 
+import click
 
-def main():
-    entered_string = input()
-    amount = 0
-    broken_letters = set()              # множество букв, которые возможно являются 'сломанными'
-    pseudo_broken_letters = set()       # множество букв, которые точно не являются 'сломанными'
-    letter = entered_string[0]
-    for i in entered_string:
-        if i == letter:
-            amount += 1
-        else:
-            if amount % 2 == 0:
-                broken_letters.add(letter)
+
+@click.command()
+@click.option('-s', '--entered_string', type=str, help='Введите набор букв')
+def main(entered_string):
+    if not entered_string.isalpha():
+        click.echo("Неверный ввод")
+    else:
+        amount = 0
+        broken_letters = set()              # множество букв, которые возможно являются 'сломанными'
+        pseudo_broken_letters = set()       # множество букв, которые точно не являются 'сломанными'
+        letter = entered_string[0]
+        for i in entered_string:
+            if i == letter:
+                amount += 1
             else:
-                pseudo_broken_letters.add(letter)
-            letter = i
-            amount = 1
-    print(broken_letters - pseudo_broken_letters)
+                if amount % 2 == 0:
+                    broken_letters.add(letter)
+                else:
+                    pseudo_broken_letters.add(letter)
+                letter = i
+                amount = 1
+        if broken_letters - pseudo_broken_letters:
+            click.echo(*(broken_letters - pseudo_broken_letters))
+        else:
+            click.echo("Не найдено 'сломанных' букв")
 
 
 if __name__ == '__main__':
